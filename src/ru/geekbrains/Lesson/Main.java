@@ -1,52 +1,71 @@
 package ru.geekbrains.Lesson;
 
+import java.util.Arrays;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        char[][] array = {{'X', 'Y','Z','O'}, {'A','S','D','F'}, {'Q','W','E','R'}, {'T','Y','U','I'}};
-        fillArray(array);
-//        int total = 0;
-//        for (int i = 0; i < array.length; i++) {
-//            for (int j = 0; j < array.length; j++) {
-//                System.out.print(array[i][j] + " ");
-//                total += charToInt(array[i][j]);
-//            }
-//        }
-//        System.out.println();
-//        System.out.println(total);
+        System.out.println("Массив 1 'без ошибок':");
+        String[][] array1 = {{"100","200","300","400"}, {"100","200","300","400"}, {"100","200","300","400"}, {"100","200","300","400"}};
+        checkStringArray(array1);
+        System.out.println();
 
+        System.out.println("Массив 2 'большего размера':");
+        String[][] array2 = {{"1","1","1","1"}, {"2","2","2","2"}, {"3","3","3","3"}, {"4","4","4","4"},{"5","5","5","5"}};
+        checkStringArray(array2);
+        System.out.println();
+
+        System.out.println("Массив 3 'не числовые символы в массиве':");
+        String[][] array3 = {{"Hello","200","300","400"}, {"Yes","200","300","400"}, {"Ok","200","300","400"}, {"Hi","200","300","400"}};
+        checkStringArray(array3);
+        System.out.println();
+
+        System.out.println("Массив 4 'меньшего размера':");
+        String[][] array4 = {{"1","2","3"}, {"1","2","3"}, {"1","2","3"},{"1","2","3"}};
+        checkStringArray(array4);
+        System.out.println();
+
+        System.out.println("Массив 5 'меньшего размера':");
+        String[][] array5 = {{"1","1","1","1"}, {"2","2","2","2"}, {"3","3","3","3"}};
+        checkStringArray(array5);
+        System.out.println();
     }
-    public static int charToInt (char x) {
-        int q = (int) x;
-        return q;
-    }
-    public static void fillArray (char[][] arr) {
+
+    public static int stringToInt (String x) {
         try {
-            arr = new char[4][4];
-        } catch (MyArraySizeException e) {
-            e.printStackTrace();
-            System.out.println("Неверный размер массива");
-        } catch (Exception e) {
-            System.out.println("Произошла ошибка");
-        }
-        int total = 0;
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr.length; j++) {
-                try {
-                System.out.print(arr[i][j] + " ");
-                total += charToInt(arr[i][j]);
-                } catch (MyArrayDataException e) {
-                e.printStackTrace();
-                System.out.println(arr[i][j] + " не приводится к int");
-                } catch (Exception e) {
-                System.out.println("Произошла ошибка");
+            int asInt = Integer.parseInt (x);
+            return asInt;
+        } catch (NumberFormatException e){} /*Неверное преобразование символьной строки в числовой формат*/
+        return -1;
+    }
+
+    public static void checkStringArray (String[][] arr) {
+        try {
+            int total = 0;
+            int index = 0;
+            for (int i = 0; i < arr.length; i++) {
+                for (int j = 0; j < arr.length; j++) {
+                    if (arr.length != 4 || arr[j].length != 4) {
+                        throw new MyArraySizeException();
+                    }
+                    index++;
+                    try {
+                        int x = stringToInt(arr[i][j]);
+                        if (x == -1) {
+                            throw new MyArrayDataException ();
+                        }
+                        total += stringToInt(arr[i][j]);
+//                        System.out.print(arr[i][j] + "-" + index + ", ");
+                    } catch (MyArrayDataException e) {
+                        System.out.println("индекс №" + index + " (" + arr[i][j] + ") не приводится к int; ");
+                    }
                 }
             }
-        }
-        System.out.println();
-        System.out.println(total);
-
+            System.out.println("Сумма: " + total);
+        } catch (MyArraySizeException e) {
+            System.out.println("Неверный размер массива");
         }
     }
+
 }
